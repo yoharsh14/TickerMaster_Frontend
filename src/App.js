@@ -10,7 +10,7 @@ import Withdraw from "./components/Withdraw";
 import Form from "./components/Form";
 //ABIs
 import abi from "./constants/TicketMaster.json";
-
+import "./App.css";
 //Address
 import config from "./constants/networkMapping.json";
 
@@ -83,31 +83,35 @@ export default function App() {
   }, [occasions.length == 0 && account != null]);
   return (
     <div>
+      {provider && (
+        <div className="notice">Connect to Polygon Mumbai testnet</div>
+      )}
       <header>
         <Navigation account={account} setAccount={setAccount} />
         <h2 className="header__title">
           <strong>Event</strong>Tickets
         </h2>
       </header>
-      {owner != account ? (
+      {owner != account || account == null ? (
         <div>
           <Sort />
           <div className="cards">
-            {occasions.map((occasion, index) => (
-              <Card
-                occasion={occasion}
-                id={index + 1}
-                ticketMaster={ticketMaster}
-                provider={provider}
-                account={account}
-                toggle={toggle}
-                setToggle={setToggle}
-                setOccasion={setOccasion}
-                key={index}
-              />
-            ))}
+            {ticketMaster &&
+              occasions.map((occasion, index) => (
+                <Card
+                  occasion={occasion}
+                  id={index + 1}
+                  ticketMaster={ticketMaster}
+                  provider={provider}
+                  account={account}
+                  toggle={toggle}
+                  setToggle={setToggle}
+                  setOccasion={setOccasion}
+                  key={index}
+                />
+              ))}
           </div>
-          {toggle && (
+          {toggle && ticketMaster && (
             <SeatChart
               occasion={occasion}
               ticketMaster={ticketMaster}
